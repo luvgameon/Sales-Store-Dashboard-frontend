@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import {
   BarChart,
   Bar,
@@ -8,11 +8,11 @@ import {
   Tooltip,
   ResponsiveContainer,
   Cell,
-} from 'recharts';
-import { useFilters } from '@/context/FilterContext';
-import { fetchSalesByBrand } from '@/api/dashboardApi';
-import { Skeleton } from '@/components/ui/skeleton';
-import { BarChart3 } from 'lucide-react';
+} from "recharts";
+import { useFilters } from "@/context/FilterContext";
+import { fetchSalesByBrand } from "@/api/dashboardApi";
+import { Skeleton } from "@/components/ui/skeleton";
+import { BarChart3 } from "lucide-react";
 
 interface BrandData {
   brand: string;
@@ -26,14 +26,16 @@ interface SalesByBrandChartProps {
 }
 
 const COLORS = [
-  'hsl(217, 91%, 60%)',
-  'hsl(217, 91%, 65%)',
-  'hsl(217, 91%, 70%)',
-  'hsl(217, 91%, 75%)',
-  'hsl(217, 91%, 80%)',
+  "hsl(217, 91%, 60%)",
+  "hsl(217, 91%, 65%)",
+  "hsl(217, 91%, 70%)",
+  "hsl(217, 91%, 75%)",
+  "hsl(217, 91%, 80%)",
 ];
 
-const SalesByBrandChart: React.FC<SalesByBrandChartProps> = ({ onBrandClick }) => {
+const SalesByBrandChart: React.FC<SalesByBrandChartProps> = ({
+  onBrandClick,
+}) => {
   const { filters } = useFilters();
   const [data, setData] = useState<BrandData[]>([]);
   const [loading, setLoading] = useState(true);
@@ -43,6 +45,7 @@ const SalesByBrandChart: React.FC<SalesByBrandChartProps> = ({ onBrandClick }) =
     const loadData = async () => {
       setLoading(true);
       const result = await fetchSalesByBrand(filters);
+      console.log("branddata", result);
       setData(result);
       setLoading(false);
     };
@@ -62,15 +65,28 @@ const SalesByBrandChart: React.FC<SalesByBrandChartProps> = ({ onBrandClick }) =
         <div className="bg-card border border-border rounded-lg shadow-lg p-3">
           <p className="font-medium text-foreground mb-2">{item.brand}</p>
           <p className="text-sm text-muted-foreground">
-            Sales: <span className="text-foreground font-medium">{formatCurrency(item.sales)}</span>
+            Sales:{" "}
+            <span className="text-foreground font-medium">
+              {formatCurrency(item.sales)}
+            </span>
           </p>
           <p className="text-sm text-muted-foreground">
-            Growth: <span className={parseFloat(item.growth) >= 0 ? 'text-success' : 'text-destructive'}>
+            Growth:{" "}
+            <span
+              className={
+                parseFloat(item.growth) >= 0
+                  ? "text-success"
+                  : "text-destructive"
+              }
+            >
               {item.growth}%
             </span>
           </p>
           <p className="text-sm text-muted-foreground">
-            Orders: <span className="text-foreground">{item.orders.toLocaleString()}</span>
+            Orders:{" "}
+            <span className="text-foreground">
+              {item.orders.toLocaleString()}
+            </span>
           </p>
           <p className="text-xs text-primary mt-2">Click to drill down</p>
         </div>
@@ -90,7 +106,9 @@ const SalesByBrandChart: React.FC<SalesByBrandChartProps> = ({ onBrandClick }) =
       <div className="chart-container">
         <div className="flex items-center gap-2 mb-4">
           <BarChart3 className="w-5 h-5 text-primary" />
-          <h3 className="text-lg font-semibold text-foreground">Sales by Brand</h3>
+          <h3 className="text-lg font-semibold text-foreground">
+            Sales by Brand
+          </h3>
         </div>
         <Skeleton className="h-[250px] w-full" />
       </div>
@@ -101,31 +119,38 @@ const SalesByBrandChart: React.FC<SalesByBrandChartProps> = ({ onBrandClick }) =
     <div className="chart-container animate-fade-in">
       <div className="flex items-center gap-2 mb-4">
         <BarChart3 className="w-5 h-5 text-primary" />
-        <h3 className="text-lg font-semibold text-foreground">Sales by Brand</h3>
+        <h3 className="text-lg font-semibold text-foreground">
+          Sales by Brand
+        </h3>
       </div>
-      
+
       <ResponsiveContainer width="100%" height={280}>
-        <BarChart 
-          data={data} 
+        <BarChart
+          data={data}
           layout="vertical"
           margin={{ top: 5, right: 20, left: 60, bottom: 5 }}
         >
-          <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" horizontal={true} vertical={false} />
-          <XAxis 
-            type="number" 
-            tickFormatter={formatCurrency}
-            tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
-            axisLine={{ stroke: 'hsl(var(--border))' }}
+          <CartesianGrid
+            strokeDasharray="3 3"
+            stroke="hsl(var(--border))"
+            horizontal={true}
+            vertical={false}
           />
-          <YAxis 
-            type="category" 
+          <XAxis
+            type="number"
+            tickFormatter={formatCurrency}
+            tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 12 }}
+            axisLine={{ stroke: "hsl(var(--border))" }}
+          />
+          <YAxis
+            type="category"
             dataKey="brand"
-            tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
-            axisLine={{ stroke: 'hsl(var(--border))' }}
+            tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 12 }}
+            axisLine={{ stroke: "hsl(var(--border))" }}
           />
           <Tooltip content={<CustomTooltip />} />
-          <Bar 
-            dataKey="sales" 
+          <Bar
+            dataKey="sales"
             radius={[0, 4, 4, 0]}
             cursor="pointer"
             onClick={handleClick}
@@ -133,10 +158,12 @@ const SalesByBrandChart: React.FC<SalesByBrandChartProps> = ({ onBrandClick }) =
             onMouseLeave={() => setActiveIndex(null)}
           >
             {data.map((_, index) => (
-              <Cell 
-                key={`cell-${index}`} 
+              <Cell
+                key={`cell-${index}`}
                 fill={COLORS[index % COLORS.length]}
-                opacity={activeIndex === null || activeIndex === index ? 1 : 0.6}
+                opacity={
+                  activeIndex === null || activeIndex === index ? 1 : 0.6
+                }
               />
             ))}
           </Bar>

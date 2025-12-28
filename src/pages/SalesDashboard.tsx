@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import DashboardLayout from '@/components/layout/DashboardLayout';
-import KpiCard from '@/components/kpi/KpiCard';
-import SalesTrendChart from '@/components/charts/SalesTrendChart';
-import SalesByBrandChart from '@/components/charts/SalesByBrandChart';
-import SalesByRegionChart from '@/components/charts/SalesByRegionChart';
-import ProductDrilldownChart from '@/components/charts/ProductDrilldownChart';
-import { useFilters } from '@/context/FilterContext';
-import { fetchSalesKpis } from '@/api/dashboardApi';
-import { DollarSign, TrendingUp, Award, ShoppingBag } from 'lucide-react';
+import React, { useEffect, useState } from "react";
+import DashboardLayout from "@/components/layout/DashboardLayout";
+import KpiCard from "@/components/kpi/KpiCard";
+import SalesTrendChart from "@/components/charts/SalesTrendChart";
+import SalesByBrandChart from "@/components/charts/SalesByBrandChart";
+import SalesByRegionChart from "@/components/charts/SalesByRegionChart";
+import ProductDrilldownChart from "@/components/charts/ProductDrilldownChart";
+import { useFilters } from "@/context/FilterContext";
+import { fetchSalesKpis } from "@/api/dashboardApi";
+import { DollarSign, TrendingUp, Award, ShoppingBag } from "lucide-react";
 
 interface SalesKpis {
   totalSales: number;
@@ -42,8 +42,8 @@ const SalesDashboard: React.FC = () => {
   };
 
   return (
-    <DashboardLayout 
-      title="Sales Dashboard" 
+    <DashboardLayout
+      title="Sales Dashboard"
       subtitle="Real-time sales analytics and performance metrics"
     >
       {/* KPI Cards */}
@@ -52,7 +52,7 @@ const SalesDashboard: React.FC = () => {
           title="Total Sales"
           value={kpis?.totalSales || 0}
           change={kpis?.yoyGrowth}
-          prefix="$"
+          prefix="₹"
           icon={<DollarSign className="w-5 h-5" />}
           loading={loading}
         />
@@ -66,7 +66,7 @@ const SalesDashboard: React.FC = () => {
         />
         <KpiCard
           title="Top Brand"
-          value={kpis?.topBrand || '-'}
+          value={kpis?.topBrand || "-"}
           icon={<Award className="w-5 h-5" />}
           loading={loading}
         />
@@ -82,7 +82,10 @@ const SalesDashboard: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         <SalesTrendChart />
         {selectedBrand ? (
-          <ProductDrilldownChart brand={selectedBrand} onBack={handleBackFromDrilldown} />
+          <ProductDrilldownChart
+            brand={selectedBrand}
+            onBack={handleBackFromDrilldown}
+          />
         ) : (
           <SalesByBrandChart onBrandClick={handleBrandClick} />
         )}
